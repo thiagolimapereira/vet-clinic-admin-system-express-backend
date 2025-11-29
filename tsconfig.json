@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    /* Linguagem e ambiente */
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "module": "CommonJS",
+
+    /* Estrutura do projeto */
+    "rootDir": "src",
+    "outDir": "dist",
+
+    /* Resolução de módulos */
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* Suporte a JS (caso use arquivos .js misturados) */
+    "allowJs": true,
+
+    /* Qualidade de tipagem */
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    /* Melhorias modernas */
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+
+    /* Emissão */
+    "sourceMap": true
+  },
+
+  /* Inclui todo o código TS dentro de src */
+  "include": ["src"],
+
+  /* Ignora dist e node_modules */
+  "exclude": ["node_modules", "dist"]
+}

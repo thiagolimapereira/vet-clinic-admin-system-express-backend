@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  male
+  female
+  other
+}
+
+enum Species {
+  dog
+  cat
+  bird
+  rodent
+  other
+}
+
+enum PetGender {
+  M
+  F
+}
+
+enum WeightUnit {
+  kg
+  g
+}
+
+enum HeightUnit {
+  cm
+  m
+}
+
+enum AppointmentStatus {
+  scheduled
+  completed
+  canceled
+}
+
+model Person {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique
+  password   String
+  email      String?  @unique
+  phone      String   @unique
+  document   String   @unique
+  birth_date DateTime?
+  gender     Gender?
+  active     Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  vet Vet?
+  pets Pet[]
+}
+
+model Vet {
+  id         Int     @id
+  crmv       String  @unique
+  specialty  String
+
+  person     Person  @relation(fields: [id], references: [id])
+
+  appointments Appointment[]
+}
+
+model Pet {
+  id             Int        @id @default(autoincrement())
+  personId       Int
+  person         Person     @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  active         Boolean    @default(true)
+  created_at     DateTime   @default(now())
+  updated_at     DateTime   @updatedAt
+
+  name           String
+  species        Species
+  gender         PetGender
+
+  weight         Float
+  weight_unit    WeightUnit @default(kg)
+
+  height         Float
+  height_unit    HeightUnit @default(cm)
+
+  birth_date     DateTime?
+  additional_info String?
+
+  appointments Appointment[]
+}
+
+model Appointment {
+  id              Int               @id @default(autoincrement())
+  
+  petId           Int
+  pet             Pet               @relation(fields: [petId], references: [id], onDelete: Cascade)
+  
+  vetId           Int
+  vet             Vet               @relation(fields: [vetId], references: [id], onDelete: Cascade)
+
+  active          Boolean           @default(true)
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+
+  datetime        DateTime
+  reason          String
+  status          AppointmentStatus @default(scheduled)
+  additional_info String?
+}
+
